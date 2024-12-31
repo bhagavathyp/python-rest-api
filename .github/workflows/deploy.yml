@@ -35,5 +35,5 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          scp -o StrictHostKeyChecking=no app1.py $EC2_USER@$EC2_IP:/home/ec2-user/
+          scp -o StrictHostKeyChecking=no app2.py $EC2_USER@$EC2_IP:/home/ec2-user/
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_IP "sudo systemctl restart flask-app"
