@@ -10,17 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository code
+      # Step 1: Enable debug logging
+      - name: Enable debug logging
+        run: |
+          echo "GITHUB_ACTIONS_DEBUG=true" >> $GITHUB_ENV
+
+      # Step 2: Check out the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python environment
+      # Step 3: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      # Step 3: Deploy to EC2
+      # Step 4: Deploy to EC2
       - name: Deploy to EC2
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -32,4 +37,3 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           scp -o StrictHostKeyChecking=no app1.py $EC2_USER@$EC2_IP:/home/ec2-user/
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_IP "sudo systemctl restart flask-app"
-
