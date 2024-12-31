@@ -48,7 +48,7 @@ def delete_book(book_id):
 # Endpoint to provide a simple health check
 @app.route('/health', methods=['GET'])
 def health():
-    return jsonify({"status": "healthy"}), 200
+    return jsonify({"status": "healthy now"}), 200
 
 if __name__ == '__main__':
   # app.run(debug=True)
