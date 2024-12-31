@@ -45,7 +45,10 @@ def delete_book(book_id):
     books = [book for book in books if book["id"] != book_id]
     return jsonify({"message": "Book deleted"})
 
-
+# Endpoint to provide a simple health check
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"status": "healthy"}), 200
 
 if __name__ == '__main__':
   # app.run(debug=True)
