@@ -1,0 +1,35 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Deploy to EC2
+      - name: Deploy to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          EC2_USER: ec2-user
+          EC2_IP: 54.226.160.1
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp -o StrictHostKeyChecking=no app1.py $EC2_USER@$EC2_IP:/home/ec2-user/
+          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_IP "sudo systemctl restart flask-app"
+
